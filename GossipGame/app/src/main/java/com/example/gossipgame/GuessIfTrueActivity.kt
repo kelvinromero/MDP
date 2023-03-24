@@ -40,6 +40,8 @@ class GuessIfTrueActivity : AppCompatActivity() {
     private fun guessTrue() {
         if (this.gossip.isTrue) {
             setResult(RESULT_OK)
+        } else {
+            setResult(RESULT_FIRST_USER)
         }
         finish()
     }
@@ -47,6 +49,8 @@ class GuessIfTrueActivity : AppCompatActivity() {
     private fun guessFalse() {
         if (!this.gossip.isTrue) {
             setResult(RESULT_OK)
+        } else {
+            setResult(RESULT_FIRST_USER)
         }
         finish()
     }

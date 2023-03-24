@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             } else if(it.resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Given up so easy, huh?", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "That's wrong!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Not good enough, try again!", Toast.LENGTH_SHORT).show()
             }
         }
 

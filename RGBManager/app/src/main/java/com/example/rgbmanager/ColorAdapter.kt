@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.Collections
 
-class ColorAdapter(val colors: MutableList<String>): RecyclerView.Adapter<ColorAdapter.MyHolder>() {
+class ColorAdapter(val colors: MutableList<RGBColor>): RecyclerView.Adapter<ColorAdapter.MyHolder>() {
     var onItemClickRecyclerView: OnItemClickRecyclerView? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorAdapter.MyHolder {
@@ -18,16 +18,16 @@ class ColorAdapter(val colors: MutableList<String>): RecyclerView.Adapter<ColorA
 
     override fun onBindViewHolder(holder: ColorAdapter.MyHolder, position: Int) {
         val color = this.colors.get(position)
-        holder.tvNome.text = color
+        holder.tvNome.text = color.name
     }
 
     override fun getItemCount(): Int {
         return this.colors.size
     }
 
-    fun add(color: String) {
+    fun add(color: RGBColor) {
         this.colors.add(color)
-        this.notifyDataSetChanged()
+        this.notifyItemInserted(this.colors.size)
     }
 
     fun del(index: Int) {
@@ -46,9 +46,9 @@ class ColorAdapter(val colors: MutableList<String>): RecyclerView.Adapter<ColorA
 
         init {
             this.tvNome = item.findViewById(R.id.tvItemNome)
-            item.setOnClickListener({
+            item.setOnClickListener {
                 this@ColorAdapter.onItemClickRecyclerView?.onItemClick(this.adapterPosition)
-            })
+            }
         }
     }
 }

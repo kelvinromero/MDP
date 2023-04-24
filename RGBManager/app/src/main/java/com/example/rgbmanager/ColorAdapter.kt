@@ -30,6 +30,11 @@ class ColorAdapter(val colors: MutableList<RGBColor>): RecyclerView.Adapter<Colo
         this.notifyItemInserted(this.colors.size)
     }
 
+    fun edit(color: RGBColor, position: Int) {
+        this.colors.set(position, color)
+        this.notifyItemChanged(position)
+    }
+
     fun del(index: Int) {
         this.colors.removeAt(index)
         this.notifyItemRemoved(index)

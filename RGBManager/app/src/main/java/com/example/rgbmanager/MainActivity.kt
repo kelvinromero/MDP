@@ -5,9 +5,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Adapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editColorResult: ActivityResultLauncher<Intent>
 
     init {
+        this.colors.add(RGBColor("Red", 255, 0, 0))
+        this.colors.add(RGBColor("Green", 0, 255, 0))
+        this.colors.add(RGBColor("Blue", 0, 0, 255))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     it.data?.getSerializableExtra("COLOR") as RGBColor
                 } as RGBColor
 
-                this.colors.add(color)
+                (this.rvColors.adapter as ColorAdapter).add(color)
             }
         }
 
@@ -55,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
                 val position = it.data?.getIntExtra("POSITION", 0) ?: 0
 
-                this@MainActivity.colors[position] = color
+                (this@MainActivity.rvColors.adapter as ColorAdapter).edit(color, position)
             }
         }
 
@@ -75,6 +80,7 @@ class MainActivity : AppCompatActivity() {
 
             val intent = Intent(this@MainActivity, ColorFormActivity::class.java).apply {
                 putExtra("COLOR", color)
+                putExtra("POSITION", position)
             }
 
             this@MainActivity.editColorResult.launch(intent)
@@ -98,7 +104,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            (this@MainActivity.rvColors.adapter as ColorAdapter).del(viewHolder.adapterPosition)
+            if (direction == ItemTouchHelper.START) {
+                Toast.makeText(this@MainActivity, "TODO Sharing", Toast.LENGTH_SHORT).show()
+            } else {
+                val builder = AlertDialog.Builder(this@MainActivity).apply {
+                    setTitle("Remover cor")
+                    setMessage("Deseja remover a cor?")
+                    setPositiveButton("Sim") { _, _ ->
+                        (this@MainActivity.rvColors.adapter as ColorAdapter).del(viewHolder.adapterPosition)
+                    }
+                    setNegativeButton("Não", null)
+                    this@MainActivity.rvColors.adapter?.notifyDataSetChanged()
+                }
+                builder.create().show()
+            }
         }
     }
 }

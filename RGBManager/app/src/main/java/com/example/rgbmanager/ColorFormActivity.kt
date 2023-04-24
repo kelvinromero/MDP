@@ -15,6 +15,7 @@ class ColorFormActivity : AppCompatActivity() {
     private lateinit var etBlue: EditText
     private lateinit var btnSaveColor: Button
     private lateinit var btnCancel: Button
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,8 @@ class ColorFormActivity : AppCompatActivity() {
         } else {
             intent.getSerializableExtra("COLOR")
         } as RGBColor
+
+        this.position = intent.getIntExtra("POSITION", 0)
 
         this.etColor = findViewById(R.id.etColorName)
         this.etRed = findViewById(R.id.etRed)
@@ -56,6 +59,7 @@ class ColorFormActivity : AppCompatActivity() {
         val color = RGBColor(colorName, red, green, blue)
         val intent = Intent().apply {
             putExtra("COLOR", color)
+            putExtra("POSITION", this@ColorFormActivity.position)
         }
 
         setResult(RESULT_OK, intent)

@@ -105,7 +105,13 @@ class MainActivity : AppCompatActivity() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (direction == ItemTouchHelper.START) {
-                Toast.makeText(this@MainActivity, "TODO Sharing", Toast.LENGTH_SHORT).show()
+                val color = colors[viewHolder.adapterPosition]
+                val shareIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, color.getHex())
+                    type = "text/plain"
+                }
+                startActivity(Intent.createChooser(shareIntent, "Compartilhar"))
             } else {
                 val builder = AlertDialog.Builder(this@MainActivity).apply {
                     setTitle("Remover cor")
